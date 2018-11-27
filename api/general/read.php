@@ -58,7 +58,17 @@ if($num>0){
             "operator" => $operator,
             "date" => $date,
             "description" => $description,
-            "photo_path" => $photo_path
+            "photo_path" => $photo_path,
+            "ef_system_power"=>$ef_system_power,
+            "ef_annual_production"=>$ef_annual_production,
+            "ef_co2_avoided"=>$ef_co2_avoided,
+            "ef_reimbursement"=>$ef_reimbursement,
+            "ha_solar_panel"=>$ha_solar_panel,
+            "ha_azimuth_angle"=>$ha_azimuth_angle,
+            "ha_inclination_angle"=>$ha_inclination_angle,
+            "ha_communication"=>$ha_communication,
+            "ha_inverter"=>$ha_inverter,
+            "ha_sensors"=>$ha_sensors
         );
 
         array_push($products_arr["general"], $product_item);
