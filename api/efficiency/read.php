@@ -13,7 +13,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // database connection will be here
 // include database and object files
 include_once '../config/Database.php';
-include_once '../general/general.php';
+include_once '../efficiency/efficiency.php';
 
 
 
@@ -26,7 +26,7 @@ $database = new Database();
 $db = $database->connect();
 
 // initialize object
-$product = new General($db);
+$product = new Efficiency($db);
 
 // read products will be here
 // query products
@@ -38,7 +38,7 @@ if($num>0){
 
     // products array
     $products_arr=array();
-    $products_arr["records"]=array();
+    $products_arr["efficiency"]=array();
 
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -50,18 +50,13 @@ if($num>0){
         extract($row);
 
         $product_item=array(
-            "id" => $id,
-            "name" => $name,
-            "address" => $address,
-            "latitude" => $latitude,
-            "longitude" => $longitude,
-            "operator" => $operator,
-            "date" => $date,
-            "description" => $description,
-            "photo_path" => $photo_path
+            "system_power" => $system_power,
+            "annual_production" => $annual_production,
+            "co2_avoided" => $co2_avoided,
+            "reimbursement" => $reimbursement
         );
 
-        array_push($products_arr["records"], $product_item);
+        array_push($products_arr["efficiency"], $product_item);
     }
 
     // set response code - 200 OK

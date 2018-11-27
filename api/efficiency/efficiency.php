@@ -7,22 +7,18 @@
  */
 
 
-class General{
+class Efficiency{
 
     // database connection and table name
     private $conn;
-    private $table_name = "general";
+    private $table_name = "efficiency";
 
     // object properties
-    public $id;
-    public $name;
-    public $address;
-    public $latitude;
-    public $longitude;
-    public $operator;
-    public $date;
-    public $description;
-    public $photo_path;
+    public $system_power;
+    public $annual_production;
+    public $co2_avoided;
+    public $reimbursement;
+
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -34,7 +30,7 @@ class General{
 
         // select all query
         $query = "SELECT
-                 p.id, p.name, p.description,p.address,p.
+                 p.	system_power, p.annual_production, p.co2_avoided,p.reimbursement
             FROM
                 " . $this->table_name . " p";
 
