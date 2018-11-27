@@ -4,10 +4,19 @@
     height: 91vh;
 }
 
+#margin {
+    margin-left: 50px !important;
+}
+
 .solar-image {
-    min-height: 200px;
+    min-height: 100px;
+    height: 180px;
     padding: 0;
     margin: 0;
+}
+
+.no-shadows {
+    box-shadow: none!important;
 }
 
 .ml-1 {

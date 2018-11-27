@@ -9,8 +9,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
     <title>VP</title>
 </head>
@@ -46,33 +46,148 @@
 
     <!-- CONTENT -->
     <div class="modal-content">
-        <h4 id="solar-name">Solar example</h4>
+        <h4 id="solar-name">Solar name</h4>
         <button class="modal-close btn-flat" style="position:absolute;top:0;right:0;"><img
                 style="padding: 10px 0 10px 0" src="./icons/ic_close.svg"></button>
 
-        <ul class="collapsible expandable">
+        <ul class="collapsible expandable no-shadows ">
             <li>
                 <div class="collapsible-header"><i class="material-icons">filter_drama</i>General information</div>
                 <div class="collapsible-body">
-                    <span>Lorem ipsum dolor sit amet.</span> <!-- TODO -->
+
+                    <div class="row s12" style="vertical-align: middle">
+
+                        <img id="upload-photo" src="https://via.placeholder.com/200" height="200px" alt="placeholder">
+                        <input class="right" type='file' onchange="readURL(this);"/>
+                    </div>
+
+                    <div class="row col s12">
+
+                        <!-- Commission date -->
+                        <div class="input-field col s6 right">
+                            <i class="material-icons prefix">calendar_today</i>
+                            <input id="date" type="date" class="validate">
+                            <label for="date">Date of commission</label>
+                        </div>
+
+                        <!-- Operator -->
+                        <div class="input-field col s6 right">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="operator" type="text" class="validate">
+                            <label for="operator">Operator</label>
+                        </div>
+
+                    </div>
+
+                    <div class="input-field" style="margin-top: 30px">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea id="desc" class="materialize-textarea"></textarea>
+                        <label for="desc">Description</label>
+                    </div>
+
                 </div>
             </li>
             <li>
                 <div class="collapsible-header"><i class="material-icons">place</i>Address</div>
                 <div class="collapsible-body">
-                    <span>Lorem ipsum dolor sit amet.</span> <!-- TODO -->
+
+                    <div class="row col s12">
+                        <!-- Latitude -->
+                        <div class="input-field col s6 left">
+                            <i class="material-icons prefix">place</i>
+                            <input id="lat" type="text">
+                            <label for="lat">Latitude</label>
+                        </div>
+
+                        <!-- Longitude -->
+                        <div class="input-field col s6 left">
+                            <i class="material-icons prefix">place</i>
+                            <input id="lot" type="text">
+                            <label for="lot">Longitude</label>
+                        </div>
+                    </div>
                 </div>
             </li>
             <li>
                 <div class="collapsible-header"><i class="material-icons">trending_up</i>Efficiency</div>
                 <div class="collapsible-body">
-                    <span>Lorem ipsum dolor sit amet.</span> <!-- TODO -->
+
+                    <div class="row col s12">
+                        <!-- System power -->
+                        <div class="input-field col s6 left">
+                            <i class="material-icons prefix">power</i>
+                            <input id="power" type="number" class="validate">
+                            <label for="power">System power (kWp)</label>
+                        </div>
+
+                        <!-- Annual production -->
+                        <div class="input-field col s6 right">
+                            <i class="material-icons prefix">trending_down</i>
+                            <input id="production" type="number" class="validate">
+                            <label for="production">Annual production (kWh)</label>
+
+                        </div>
+
+                        <!-- CO2 avoided -->
+                        <div class="input-field col s6 left">
+                            <i class="material-icons prefix"></i>
+                            <input id="co2" type="number" class="validate">
+                            <label for="co2">CO2 avoided (tons per annum)</label>
+                        </div>
+
+                        <!-- Reimbursement -->
+                        <div class="input-field col s6 right">
+                            <i class="material-icons prefix"></i>
+                            <input id="reimbursement" type="number" class="validate">
+                            <label for="reimbursement">Reimbursement (euros)</label>
+                        </div>
+
+                    </div>
                 </div>
             </li>
             <li>
                 <div class="collapsible-header"><i class="material-icons">build</i>Hardware</div>
                 <div class="collapsible-body">
-                    <span>Lorem ipsum dolor sit amet.</span> <!-- TODO -->
+
+                    <div class="row col s12">
+
+                        <!-- Panel modules -->
+                        <div class="input-field col s6 left">
+                            <input id="panels" type="number" class="validate">
+                            <label for="panels">Panel modules</label>
+                        </div>
+
+                        <!-- Inverter -->
+                        <div class="input-field col s6 right">
+                            <input id="sensors" type="text" class="validate">
+                            <label for="sensors">Sensors</label>
+                        </div>
+
+                        <!-- Azimuth angle -->
+                        <div class="input-field col s6 left">
+                            <input id="azimuth" type="number" class="validate">
+                            <label for="azimuth">Azimuth angle</label>
+                        </div>
+
+                        <!-- Inclination angle -->
+                        <div class="input-field col s6 right">
+                            <input id="inclination" type="number" class="validate">
+                            <label for="inclination">Inclination angle</label>
+                        </div>
+
+                        <!-- Communication -->
+                        <div class="input-field col s6 left">
+                            <input id="communication" type="text" class="validate">
+                            <label for="communication">Communication</label>
+                        </div>
+
+                        <!-- Inverter -->
+                        <div class="input-field col s6 right">
+                            <input id="inverter" type="text" class="validate">
+                            <label for="inverter">Inverter</label>
+                        </div>
+                    </div>
+
                 </div>
             </li>
         </ul>
@@ -91,7 +206,7 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgA1PL3Gjc7Kf7ZJQRRR7nt66DZYl4X8A&callback=initMap"></script>
 <script type="text/javascript" src="js/app.js"></script>
