@@ -8,6 +8,10 @@
     margin-left: 50px !important;
 }
 
+.login-box {
+    height: 100%;
+}
+
 .solar-image {
     min-height: 100px;
     height: 180px;

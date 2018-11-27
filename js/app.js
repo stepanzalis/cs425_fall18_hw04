@@ -14,14 +14,18 @@ function initMap() {
 }
 
 function readURL(input) {
+
+    const width = 250, height = 200;
+
     if (input.files && input.files[0]) {
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = function (e) {
             $('#upload-photo')
                 .attr('src', e.target.result)
-                .width(250)
-                .height(200);
+                .width(width)
+                .height(height);
         };
+
         reader.readAsDataURL(input.files[0]);
     }
 }
