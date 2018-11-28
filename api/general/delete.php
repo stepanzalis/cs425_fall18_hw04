@@ -18,8 +18,8 @@ include_once 'Solar.php';
   $data = json_decode(file_get_contents("php://input"));
 
   // Set ID to UPDATE
-$category->latitude =  $data->latitude;
-$category->longitude = $data->longitude;
+$category->id =  $data->id;
+
 
   // Delete post
   if($category->delete()) {

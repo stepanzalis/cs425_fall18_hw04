@@ -20,12 +20,12 @@ include_once 'Solar.php';
   // Set ID to UPDATE
 
 
+$category->id = $data->id;
 $category->name = $data->name;
 $category->address =  $data->address;
 $category->latitude =  $data->latitude;
 $category->longitude = $data->longitude;
-//$category->old_latitude =  $data->old_latitude;
-//$category->old_longitude = $data->old_longitude;
+
 $category->operator = $data->operator;
 $category->date = $data->date;
 $category->description = $data->description;

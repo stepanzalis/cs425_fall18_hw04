@@ -5,13 +5,12 @@ class Solar {
     private $table = 'general';
 
     // Properties
-
+    public  $id;
     public $name;
     public $address;
     public $latitude;
     public $longitude;
-    public $old_latitude;
-    public $old_longitude;
+
     public $operator;
     public $date;
     public $description;
@@ -33,6 +32,23 @@ class Solar {
     }
 
 
+// read products
+    public function read() {
+        // Create query
+        $query = 'SELECT   p.id, p.name, p.address, p.latitude, p.longitude, p.operator,
+                          p.date,p.description,p.photo_path,p.ef_system_power,p.ef_annual_production,
+                          p.ef_co2_avoided,p.ef_reimbursement,p.ha_solar_panel,p.ha_azimuth_angle,
+                          p.ha_inclination_angle,p.ha_communication,p.ha_inverter,p.ha_sensors
+                                FROM ' . $this->table . ' p';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 
 
 
@@ -121,18 +137,19 @@ class Solar {
      ha_azimuth_angle=:ha_azimuth_angle,ha_inclination_angle=:ha_inclination_angle,ha_communication=:ha_communication
      ,ha_inverter=:ha_inverter,ha_sensors=:ha_sensors
       WHERE
-       latitude=:latitude';
+       id=:id';
 
         // Prepare Statement
         $stmt = $this->conn->prepare($query);
 
         // Clean data
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
         $this->name = htmlspecialchars(strip_tags($this->name));
         $this->address = htmlspecialchars(strip_tags($this->address));
         $this->latitude = htmlspecialchars(strip_tags($this->latitude));
         $this->longitude = htmlspecialchars(strip_tags($this->longitude));
-//        $this->old_latitude = htmlspecialchars(strip_tags($this->old_latitude));
-//        $this->old_longitude = htmlspecialchars(strip_tags($this->old_longitude));
+
         $this->operator = htmlspecialchars(strip_tags($this->operator));
         $this->date = htmlspecialchars(strip_tags($this->date));
         $this->description = htmlspecialchars(strip_tags($this->description));
@@ -153,12 +170,12 @@ class Solar {
 
 
         // Bind data
+        $stmt-> bindParam(':id', $this->id);
         $stmt-> bindParam(':name', $this->name);
         $stmt-> bindParam(':address', $this->address);
         $stmt-> bindParam(':latitude', $this->latitude);
         $stmt-> bindParam(':longitude', $this->longitude);
-//        $stmt-> bindParam(':old_latitude', $this->old_latitude);
-//        $stmt-> bindParam(':old_longitude', $this->old_longitude);
+
         $stmt-> bindParam(':operator', $this->operator);
 
         $stmt-> bindParam(':date', $this->date);
@@ -189,18 +206,18 @@ class Solar {
     // Delete Category
     public function delete() {
         // Create query
-        $query = 'DELETE FROM ' . $this->table . ' WHERE latitude =:latitude AND longitude=:longitude';
+        $query = 'DELETE FROM ' . $this->table . ' WHERE id =:id';
 
         // Prepare Statement
         $stmt = $this->conn->prepare($query);
 
         // clean data
-        $this->latitude = htmlspecialchars(strip_tags($this->latitude));
-        $this->longitude = htmlspecialchars(strip_tags($this->longitude));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
 
         // Bind Data
-        $stmt-> bindParam(':latitude', $this->latitude);
-        $stmt-> bindParam(':longitude', $this->longitude);
+        $stmt-> bindParam(':id', $this->id);
+
 
         // Execute query
         if($stmt->execute()) {
@@ -208,7 +225,7 @@ class Solar {
         }
 
         // Print error if something goes wrong
-       // printf("Error: $s.\n", $stmt->error);
+        printf("Error: $s.\n", $stmt->error);
 
         return false;
     }

@@ -13,7 +13,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // database connection will be here
 // include database and object files
 include_once '../config/Database.php';
-include_once '../general/general.php';
+include_once 'Solar.php';
 
 
 
@@ -26,7 +26,7 @@ $database = new Database();
 $db = $database->connect();
 
 // initialize object
-$product = new General($db);
+$product = new Solar ($db);
 
 // read products will be here
 // query products
@@ -71,7 +71,7 @@ if($num>0){
             "ha_sensors"=>$ha_sensors
         );
 
-        array_push($products_arr["general"], $product_item);
+        array_push($products_arr, $product_item);
     }
 
     // set response code - 200 OK
