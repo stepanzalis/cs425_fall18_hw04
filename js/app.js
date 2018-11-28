@@ -1,11 +1,115 @@
 let map;
-let markers = [];
+let objects;
 
 $(document).ready(function () {
     initMap();
     getMarkers();
 });
 
+function getMarkers() {
+
+    $.ajax({
+        type: 'GET',
+        url: "./api/general/read.php",
+        dataType: 'JSON',
+        success: function (response, status, xhr) {
+            objects = response; // hold data in memory
+            parsePositions(response);
+        },
+        error: function (xhr, status, error) {
+            swal("Sorry :(", "Something went wrong, could not show markers on map. Please, try it later.", "error");
+        }
+    });
+}
+
+// iteration throw json object
+function parsePositions(objects) {
+
+    for (let i = 0; i < objects.length; i++) {
+
+        let obj = objects[i];
+
+        let latitude = parseFloat(obj.latitude);
+        let longitude = parseFloat(obj.longitude);
+
+        handlePositions(latitude, longitude, obj.id);
+    }
+}
+
+// create object and call method to show markers
+function handlePositions(latitude, longitude, id) {
+
+    let position = {lat: latitude, lng: longitude};
+    addMarker(position, id);
+}
+
+// checking the login input from user
+function checkInputs(email, password) {
+
+    let elength = email.length;
+    let plength = password.length;
+
+
+    if (elength === 0 && plength === 0) return "email and password";
+
+    if (elength === 0) return "email";
+    if (plength === 0) return "password";
+
+    else return "";
+}
+
+// initialization of the map
+function initMap() {
+
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 35.126413, lng: 33.429859}, // Cyprus
+        zoom: 9
+    });
+
+    // TODO: put data to modal
+    map.addListener('click', function (event) {
+        let latLng = event.latLng;
+
+        alert(latLng);
+
+        toggleModal();
+    });
+}
+
+// Adds a marker to the map and push to the array.
+function addMarker(location, id) {
+
+    let marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        id: id
+    });
+
+    // add listener to a marker
+    google.maps.event.addListener(marker, 'click', function () {
+
+        let marker = findMarkerById(id);
+        if (marker != null) {
+            alert(marker.id);
+        }
+    });
+}
+
+// find a marker by ID in response [objects]
+function findMarkerById(id) {
+
+    for (let i = 0; i < objects.length; i++) {
+        let obj = objects[i];
+
+        if (id === obj.id) {
+            return obj;
+        }
+    }
+
+    return null;
+}
+
+// login
 function login() {
 
     let email = $("#email").val();
@@ -36,78 +140,6 @@ function login() {
         }
     });
 
-}
-
-function getMarkers() {
-
-    $.ajax({
-        type: 'GET',
-        url: "./api/general/read.php",
-        dataType: 'JSON',
-        success: function (response, status, xhr) {
-            parsePositions(response);
-        },
-        error: function (xhr, status, error) {
-            swal("Sorry :(", "Something went wrong, could not show markers on map. Please, try it later.", "error");
-        }
-    });
-}
-
-// iteration throw json object
-function parsePositions(objects) {
-
-    for (let i = 0; i < objects.length; i++) {
-
-        let latitude = parseFloat(objects[i].latitude);
-        let longitude = parseFloat(objects[i].longitude);
-
-        handlePositions(latitude, longitude);
-    }
-}
-
-// create object and call method to show markes
-function handlePositions(latitude, longitude) {
-    let position = { lat: latitude, lng: longitude};
-
-    markers.push(position);
-    addMarker(position);
-}
-
-// checking the login input from user
-function checkInputs(email, password) {
-
-    let elength = email.length;
-    let plength = password.length;
-
-
-    if (elength === 0 && plength === 0) return "email and password";
-
-    if (elength === 0) return "email";
-    if (plength === 0) return "password";
-
-    else return "";
-}
-
-// initialization of the map
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 35.126413, lng: 33.429859}, // Cyprus
-        zoom: 9
-    });
-
-    map.addListener('click', function (event) {
-        // show modal and add data to it
-    });
-
-}
-
-// Adds a marker to the map and push to the array.
-function addMarker(location) {
-    let marker = new google.maps.Marker({
-        position: location,
-        map: map
-    });
-    markers.push(marker);
 }
 
 // upload image
