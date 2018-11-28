@@ -11,7 +11,7 @@ function login() {
     let password = $("#password").val();
 
     let missing = checkInputs(email, password);
-    if (!missing.isEmpty) {
+    if (missing.length !== 0) {
         swal("Write your " + missing, "Please, write your registration " + missing, "warning");
         return;
     }
