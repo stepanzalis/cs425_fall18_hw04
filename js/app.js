@@ -10,7 +10,11 @@ function login() {
     let email = $("#email").val();
     let password = $("#password").val();
 
-    check_inputs(email, password);
+    let missing = checkInputs(email, password);
+    if (!missing.isEmpty) {
+        swal("Write your " + missing, "Please, write your registration " + missing, "warning");
+        return;
+    }
 
     let json = JSON.stringify({email: email, password: password});
 
@@ -33,10 +37,18 @@ function login() {
 
 }
 
-function check_inputs(email, password) {
-    if (email.empty() || password.isEmpty) {
-        return false;
-    } else return true;
+function checkInputs(email, password) {
+
+    let elength = email.length;
+    let plength = password.length;
+
+
+    if (elength === 0 && plength === 0) return "email and password";
+
+    if (elength === 0) return "email";
+    if (plength === 0) return "password";
+
+    else return "";
 }
 
 function initMap() {
