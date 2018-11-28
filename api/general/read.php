@@ -20,18 +20,18 @@ $database = new Database();
 $db = $database->connect();
 
 // initialize object
-$product = new Solar ($db);
+$solar = new Solar($db);
 
 // read products will be here
 // query products
-$stmt = $product->read();
+$stmt = $solar->read();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
 if($num>0){
 
     // products array
-    $products_arr=array();
+    $solar_arr=array();
 
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -42,7 +42,7 @@ if($num>0){
         // just $name only
         extract($row);
 
-        $product_item=array(
+        $solar_item=array(
             "id" => $id,
             "name" => $name,
             "address" => $address,
@@ -64,14 +64,14 @@ if($num>0){
             "ha_sensors"=>$ha_sensors
         );
 
-        array_push($products_arr, $product_item);
+        array_push($solar_arr, $solar_item);
     }
 
     // set response code - 200 OK
     http_response_code(200);
 
     // show products data in json format
-    echo json_encode($products_arr);
+    echo json_encode($solar_arr);
 }
 
 // no products found will be here

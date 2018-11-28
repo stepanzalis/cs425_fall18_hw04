@@ -1,33 +1,32 @@
 <?php
-  // Headers
-  header('Access-Control-Allow-Origin: *');
-  header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: DELETE');
-  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
+// Headers
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: DELETE');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
 include_once '../config/Database.php';
 include_once 'Solar.php';
-  // Instantiate DB & connect
-  $database = new Database();
-  $db = $database->connect();
+// Instantiate DB & connect
+$database = new Database();
+$db = $database->connect();
 
-  // Instantiate blog post object
-  $category = new Solar($db);
+// Instantiate blog post object
+$solar = new Solar($db);
 
-  // Get raw posted data
-  $data = json_decode(file_get_contents("php://input"));
+// Get raw posted data
+$data = json_decode(file_get_contents("php://input"));
 
-  // Set ID to UPDATE
-$category->id =  $data->id;
+// Set ID to UPDATE
+$solar->id = $data->id;
 
-
-  // Delete post
-  if($category->delete()) {
+// Delete post
+if ($solar->delete()) {
     echo json_encode(
-      array('message' => 'General deleted')
+        array('message' => 'General deleted')
     );
-  } else {
+} else {
     echo json_encode(
-      array('message' => 'General not deleted')
+        array('message' => 'General not deleted')
     );
-  }
+}

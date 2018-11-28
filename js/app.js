@@ -1,5 +1,6 @@
 let map;
 let objects;
+let selectedId;
 let markers = [];
 
 $(document).ready(function () {
@@ -83,18 +84,22 @@ function addMarker(location, id) {
     let marker = new google.maps.Marker({
         position: location,
         map: map,
-        id: id
+        id: id // custom attribute
     });
 
     // add listener to a marker
     google.maps.event.addListener(marker, 'click', function () {
 
-        let marker = findMarkerById(id);
-        if (marker != null) {
+        selectedId = id;
+
+        let mar = findMarkerById(id);
+        if (mar != null) {
             toggleModal();
-            fillModal(marker);
+            fillModal(mar);
         }
     });
+
+    markers.push(marker);
 }
 
 // filing the modal window with information about the PVß
@@ -139,18 +144,49 @@ function hideModalAction(action) {
     }
 }
 
-
 // delete marker
-function deleteMarker(id) {
+function deleteMarker() {
+
+    let json = JSON.stringify({id: selectedId});
 
     $.ajax({
         type: 'DELETE',
         url: "./api/general/delete.php",
+        data: json,
+        dataType: 'JSON',
+        success: function (response, status, xhr) {
+            toggleModal();
+            deactivateMarker(selectedId);
+        },
+        error: function (xhr, status, error) {
+            swal("Sorry", "Something went wrong!", "error");
+        }
+    });
+}
+
+// delete marker just from map
+function deactivateMarker(id) {
+    for (let i = 0; i < markers.length; i++) {
+
+        let m = markers[i];
+        if (id === m.id) {
+            m.setMap(null);
+        }
+    }
+}
+
+// update marker
+function updateMarker() {
+
+    let id = marker.id;
+
+    $.ajax({
+        type: 'UPDATE',
+        url: "./api/general/update.php",
         data: {id: id},
         dataType: 'JSON',
         success: function (response, status, xhr) {
             toggleModal();
-            getMarkers();
         },
         error: function (xhr, status, error) {
             swal("Sorry", "Something went wrong!", "error");
