@@ -16,11 +16,6 @@ include_once '../config/Database.php';
 include_once '../general/general.php';
 
 
-
-
-
-
-
 // instantiate database and product object
 $database = new Database();
 $db = $database->connect();
@@ -70,15 +65,13 @@ if($num>0){
             "ha_inverter"=>$ha_inverter,
             "ha_sensors"=>$ha_sensors
         );
-
-        array_push($products_arr["general"], $product_item);
     }
 
     // set response code - 200 OK
     http_response_code(200);
 
     // show products data in json format
-    echo json_encode($products_arr);
+    echo json_encode($product_item);
 }
 
 // no products found will be here

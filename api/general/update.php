@@ -1,28 +1,28 @@
 <?php
-  // Headers
-  header('Access-Control-Allow-Origin: *');
-  header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: PUT');
-  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
+// Headers
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: PUT');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
 include_once '../config/Database.php';
 include_once 'Solar.php';
-  // Instantiate DB & connect
-  $database = new Database();
-  $db = $database->connect();
+// Instantiate DB & connect
+$database = new Database();
+$db = $database->connect();
 
-  // Instantiate blog post object
-  $category = new Solar($db);
+// Instantiate blog post object
+$category = new Solar($db);
 
-  // Get raw posted data
-  $data = json_decode(file_get_contents("php://input"));
+// Get raw posted data
+$data = json_decode(file_get_contents("php://input"));
 
-  // Set ID to UPDATE
+// Set ID to UPDATE
 
 
 $category->name = $data->name;
-$category->address =  $data->address;
-$category->latitude =  $data->latitude;
+$category->address = $data->address;
+$category->latitude = $data->latitude;
 $category->longitude = $data->longitude;
 //$category->old_latitude =  $data->old_latitude;
 //$category->old_longitude = $data->old_longitude;
@@ -41,13 +41,13 @@ $category->ha_communication = $data->ha_communication;
 $category->ha_inverter = $data->ha_inverter;
 $category->ha_sensors = $data->ha_sensors;
 
-  // Update post
-  if($category->update()) {
+// Update post
+if ($category->update()) {
     echo json_encode(
-      array('message' => 'General Updated')
+        array('message' => 'General Updated')
     );
-  } else {
+} else {
     echo json_encode(
-      array('message' => 'General not updated')
+        array('message' => 'General not updated')
     );
-  }
+}
