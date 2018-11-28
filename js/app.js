@@ -2,7 +2,10 @@ let map;
 
 $(document).ready(function () {
     initMap();
-    toggleModal();
+    let markers = [];
+    // toggleModal();
+
+    getMarkers();
 });
 
 function login() {
@@ -37,6 +40,15 @@ function login() {
 
 }
 
+function getMarkers() {
+
+    let marker = new google.maps.Marker({
+        position: {lat: 35.3, lng: 33.429859},
+        map: map,
+        title: 'Hello World!'
+    });
+}
+
 function checkInputs(email, password) {
 
     let elength = email.length;
@@ -56,6 +68,20 @@ function initMap() {
         center: {lat: 35.126413, lng: 33.429859}, // Cyprus
         zoom: 9
     });
+
+    map.addListener('click', function(event) {
+        addMarker(event.latLng);
+    });
+
+}
+
+// Adds a marker to the map and push to the array.
+function addMarker(location) {
+    let marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+    markers.push(marker);
 }
 
 // upload image
