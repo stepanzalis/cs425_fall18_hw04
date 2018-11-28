@@ -20,7 +20,6 @@ class User
 
     function emailExists()
     {
-
         // query to check if email exists
         $query = "SELECT id, first_name, last_name, password
             FROM " . $this->table . "

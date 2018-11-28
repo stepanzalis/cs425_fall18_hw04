@@ -1,8 +1,9 @@
 <?php
-class Post {
+
+class Solar {
     // DB Stuff
     private $conn;
-    private $table = 'general';
+    private $table = 'solar';
 
     // Properties
 
@@ -25,14 +26,32 @@ class Post {
     public  $ha_communication;
     public  $ha_inverter;
     public  $ha_sensors;
+
     // Constructor with DB
     public function __construct($db) {
         $this->conn = $db;
     }
 
+    function read(){
 
+        // select all query
+        $query = "SELECT
+                 p.id, p.name, p.description,p.address,p.latitude,p.longitude,
+                 p.operator,p.date,p.description,p.photo_path,p.ef_system_power,
+                 p.ef_annual_production,p.ef_co2_avoided,p.ef_reimbursement,
+                 p.ha_solar_panel,p.ha_azimuth_angle,p.ha_inclination_angle,
+                 p.ha_communication,p.ha_inverter,p.ha_sensors
+            FROM
+                " . $this->table_name . " p";
 
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
 
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 
     // Create Category
     public function create() {
@@ -99,12 +118,12 @@ class Post {
         }
 
         // Print error if something goes wrong
-        printf("Error: $s.\n", $stmt->error);
+        printf("Error: \n", $stmt->error);
 
         return false;
     }
 
-    // Update Category
+    // Update Solar
     public function update() {
         // Create Query
         $query = 'UPDATE ' .
@@ -131,10 +150,11 @@ class Post {
         }
 
         // Print error if something goes wrong
-        printf("Error: $s.\n", $stmt->error);
+        printf("Error: .\n", $stmt->error);
 
         return false;
     }
+
 //
 //    // Delete Category
 //    public function delete() {
