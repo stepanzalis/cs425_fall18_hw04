@@ -15,12 +15,6 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../config/Database.php';
 include_once 'Solar.php';
 
-
-
-
-
-
-
 // instantiate database and product object
 $database = new Database();
 $db = $database->connect();
@@ -38,7 +32,6 @@ if($num>0){
 
     // products array
     $products_arr=array();
-    $products_arr["general"]=array();
 
     // retrieve our table contents
     // fetch() is faster than fetchAll()

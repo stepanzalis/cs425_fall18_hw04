@@ -6,6 +6,7 @@ $(document).ready(function () {
     getMarkers();
 });
 
+// get all markers from API
 function getMarkers() {
 
     $.ajax({
@@ -90,10 +91,51 @@ function addMarker(location, id) {
 
         let marker = findMarkerById(id);
         if (marker != null) {
-            alert(marker.id);
+            toggleModal();
+            fillModal(marker);
         }
     });
 }
+
+// filing the modal window with information about the PVß
+function fillModal(marker) {
+
+    $("#solar-name").val(marker.name);
+    $("#date").val(marker.date);
+    $("#operator").val(marker.operator);
+    $("#desc").val(marker.description);
+    $("#lat").val(marker.latitude);
+    $("#lot").val(marker.longitude);
+    $("#power").val(marker.ef_system_power);
+    $("#production").val(marker.ef_annual_production);
+    $("#co2").val(marker.ef_co2_avoided);
+    $("#reimbursement").val(marker.ef_reimbursement);
+    $("#panels").val(marker.ha_solar_panel);
+    $("#sensors").val(marker.ha_sensors);
+    $("#azimuth").val(marker.ha_azimuth_angle);
+    $("#inclination").val(marker.ha_inclination_angle);
+    $("#inverter").val(marker.ha_inverter);
+    $("#communication").val(marker.ha_communication);
+
+    window.M.updateTextFields();
+    hideModalAction(0) // hide save button
+}
+
+function hideModalAction(action) {
+
+    switch (action) {
+        case 0:
+            $("#save-panel").hide();
+            break;
+        case 1:
+            $("#update-panel").hide();
+            break;
+        case 2:
+            $("#delete-panel").hide();
+            break;
+    }
+}
+
 
 // find a marker by ID in response [objects]
 function findMarkerById(id) {
