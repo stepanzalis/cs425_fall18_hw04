@@ -1,5 +1,5 @@
 <?php
-class Post {
+class Solar {
     // DB Stuff
     private $conn;
     private $table = 'general';

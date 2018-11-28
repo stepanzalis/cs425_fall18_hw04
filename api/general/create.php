@@ -6,13 +6,13 @@ header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization,X-Requested-With');
 
 include_once '../config/Database.php';
-include_once 'Post.php';
+include_once 'Solar.php';
 // Instantiate DB & connect
 $database = new Database();
 $db = $database->connect();
 
 // Instantiate blog post object
-$category = new Post($db);
+$category = new Solar($db);
 
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
