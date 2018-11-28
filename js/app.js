@@ -1,10 +1,8 @@
 let map;
+let markers = [];
 
 $(document).ready(function () {
     initMap();
-    let markers = [];
-    // toggleModal();
-
     getMarkers();
 });
 
@@ -42,13 +40,40 @@ function login() {
 
 function getMarkers() {
 
-    let marker = new google.maps.Marker({
-        position: {lat: 35.3, lng: 33.429859},
-        map: map,
-        title: 'Hello World!'
+    $.ajax({
+        type: 'GET',
+        url: "./api/general/read.php",
+        dataType: 'JSON',
+        success: function (response, status, xhr) {
+            parsePositions(response);
+        },
+        error: function (xhr, status, error) {
+            swal("Sorry :(", "Something went wrong, could not show markers on map. Please, try it later.", "error");
+        }
     });
 }
 
+// iteration throw json object
+function parsePositions(objects) {
+
+    for (let i = 0; i < objects.length; i++) {
+
+        let latitude = parseFloat(objects[i].latitude);
+        let longitude = parseFloat(objects[i].longitude);
+
+        handlePositions(latitude, longitude);
+    }
+}
+
+// create object and call method to show markes
+function handlePositions(latitude, longitude) {
+    let position = { lat: latitude, lng: longitude};
+
+    markers.push(position);
+    addMarker(position);
+}
+
+// checking the login input from user
 function checkInputs(email, password) {
 
     let elength = email.length;
@@ -63,14 +88,15 @@ function checkInputs(email, password) {
     else return "";
 }
 
+// initialization of the map
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 35.126413, lng: 33.429859}, // Cyprus
         zoom: 9
     });
 
-    map.addListener('click', function(event) {
-        addMarker(event.latLng);
+    map.addListener('click', function (event) {
+        // show modal and add data to it
     });
 
 }
@@ -109,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     modal_instance = M.Modal.init(modal);
 });
 
+// close or open modal
 function toggleModal() {
     modal_instance.isOpen ? modal_instance.close() : modal_instance.open();
 }
