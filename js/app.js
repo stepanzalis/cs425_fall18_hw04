@@ -1,5 +1,6 @@
 let map;
 let objects;
+let markers = [];
 
 $(document).ready(function () {
     initMap();
@@ -72,7 +73,6 @@ function initMap() {
         let latLng = event.latLng;
 
         alert(latLng);
-
         toggleModal();
     });
 }
@@ -100,7 +100,7 @@ function addMarker(location, id) {
 // filing the modal window with information about the PVß
 function fillModal(marker) {
 
-    $("#solar-name").val(marker.name);
+    $("#name").text(marker.name);
     $("#date").val(marker.date);
     $("#operator").val(marker.operator);
     $("#desc").val(marker.description);
@@ -121,6 +121,11 @@ function fillModal(marker) {
     hideModalAction(0) // hide save button
 }
 
+/*
+    Hide action button depending:
+    0 -> hide "Save" (when detail)
+    1 -> hide "Update" and "Delete" (when creating)
+ */
 function hideModalAction(action) {
 
     switch (action) {
@@ -129,13 +134,30 @@ function hideModalAction(action) {
             break;
         case 1:
             $("#update-panel").hide();
-            break;
-        case 2:
             $("#delete-panel").hide();
             break;
     }
 }
 
+
+// delete marker
+function deleteMarker(id) {
+
+    $.ajax({
+        type: 'DELETE',
+        url: "./api/general/delete.php",
+        data: {id: id},
+        dataType: 'JSON',
+        success: function (response, status, xhr) {
+            toggleModal();
+            getMarkers();
+        },
+        error: function (xhr, status, error) {
+            swal("Sorry", "Something went wrong!", "error");
+        }
+    });
+
+}
 
 // find a marker by ID in response [objects]
 function findMarkerById(id) {

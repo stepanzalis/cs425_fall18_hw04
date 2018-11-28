@@ -225,7 +225,7 @@ class Solar {
         }
 
         // Print error if something goes wrong
-        printf("Error: $s.\n", $stmt->error);
+        printf("Error: \n", $stmt->error);
 
         return false;
     }
