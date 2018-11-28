@@ -4,9 +4,26 @@ let selectedId;
 let markers = [];
 
 $(document).ready(function () {
+
+    // checkLoggedIn();
+
     initMap();
     getMarkers();
 });
+
+// check if user is logged in
+function checkLoggedIn() {
+
+    if (sessionStorage.getItem('status') === 'false') {
+        swal({
+            title: "Sorry",
+            text: "You have to log in first",
+            type: "error"
+        }).then(function () {
+            window.location.replace("/cs425_hw4/");
+        });
+    }
+}
 
 // get all markers from API
 function getMarkers() {
@@ -44,21 +61,6 @@ function handlePositions(latitude, longitude, id) {
 
     let position = {lat: latitude, lng: longitude};
     addMarker(position, id);
-}
-
-// checking the login input from user
-function checkInputs(email, password) {
-
-    let elength = email.length;
-    let plength = password.length;
-
-
-    if (elength === 0 && plength === 0) return "email and password";
-
-    if (elength === 0) return "email";
-    if (plength === 0) return "password";
-
-    else return "";
 }
 
 // initialization of the map
@@ -207,39 +209,6 @@ function findMarkerById(id) {
     }
 
     return null;
-}
-
-// login
-function login() {
-
-    let email = $("#email").val();
-    let password = $("#password").val();
-
-    let missing = checkInputs(email, password);
-    if (missing.length !== 0) {
-        swal("Write your " + missing, "Please, write your registration " + missing, "warning");
-        return;
-    }
-
-    let json = JSON.stringify({email: email, password: password});
-
-    $.ajax({
-        type: 'POST',
-        url: "./api/login.php",
-        data: json,
-        dataType: 'JSON',
-        success: function (response, status, xhr) {
-            window.location.href = '/cs425_hw4/index.html';
-        },
-        error: function (xhr, status, error) {
-            if (xhr.status === 404) {
-                swal("Sorry", "You have to register first!", "error");
-            } else if (xhr.status === 401) {
-                swal("Ohh", "Incorrect email or password.", "warning");
-            }
-        }
-    });
-
 }
 
 // upload image
