@@ -11,7 +11,7 @@ $(document).ready(function () {
     getMarkers();
 });
 
-// check if user is logged in
+// checks if user is logged in
 function checkLoggedIn() {
 
     if (sessionStorage.getItem('status') === 'false') {
@@ -63,7 +63,7 @@ function handlePositions(latitude, longitude, id) {
     addMarker(position, id);
 }
 
-// initialization of the map
+// initializations of the map
 function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
@@ -104,7 +104,7 @@ function addMarker(location, id) {
     markers.push(marker);
 }
 
-// filing the modal window with information about the PVß
+// fills the modal window with information about the PVß
 function fillModal(marker) {
 
     $("#name").text(marker.name);
@@ -123,6 +123,8 @@ function fillModal(marker) {
     $("#inclination").val(marker.ha_inclination_angle);
     $("#inverter").val(marker.ha_inverter);
     $("#communication").val(marker.ha_communication);
+
+    $("#upload-photo").attr("src", marker.photo_path);
 
     window.M.updateTextFields();
     hideModalAction(0) // hide save button
@@ -146,7 +148,7 @@ function hideModalAction(action) {
     }
 }
 
-// delete marker
+// deletes marker
 function deleteMarker() {
 
     let json = JSON.stringify({id: selectedId});
@@ -158,7 +160,8 @@ function deleteMarker() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             toggleModal();
-            deactivateMarker(selectedId);
+            deactivateMarker(0); // all markers must be refreshed
+            getMarkers();
         },
         error: function (xhr, status, error) {
             swal("Sorry", "Something went wrong!", "error");
@@ -166,35 +169,66 @@ function deleteMarker() {
     });
 }
 
-// delete marker just from map
+// deletes marker just from map
 function deactivateMarker(id) {
-    for (let i = 0; i < markers.length; i++) {
 
+    for (let i = 0; i < markers.length; i++) {
         let m = markers[i];
-        if (id === m.id) {
+
+        // means all markers must be deactivated
+        if (id === 0) m.setMap(null);
+        else if (id === m.id){
             m.setMap(null);
         }
     }
 }
 
-// update marker
+// updates marker
 function updateMarker() {
 
-    let id = marker.id;
+    // code to json
+    let json = JSON.stringify(getDataFromInput());
 
     $.ajax({
-        type: 'UPDATE',
+        type: 'PUT',
         url: "./api/general/update.php",
-        data: {id: id},
+        data: json,
         dataType: 'JSON',
         success: function (response, status, xhr) {
             toggleModal();
+            getMarkers();
         },
         error: function (xhr, status, error) {
             swal("Sorry", "Something went wrong!", "error");
         }
     });
 
+}
+
+// returns data from an modal pop up
+function getDataFromInput() {
+
+    return {
+        "id": selectedId,
+        "name": $("#name").val(),
+        "latitude": $("#lat").val(),
+        "longitude": $("#lot").val(),
+        "operator": $("#operator").val(),
+        "date": $("#date").val(),
+        "description": $("#desc").val(),
+        "photo_path": "",
+        "address": "",
+        "ef_system_power": $("#power").val(),
+        "ef_annual_production": $("#production").val(),
+        "ef_co2_avoided": $("#co2").val(),
+        "ef_reimbursement": $("#reimbursement").val(),
+        "ha_solar_panel": $("#panels").val(),
+        "ha_azimuth_angle": $("#azimuth").val(),
+        "ha_inclination_angle": $("#inclination").val(),
+        "ha_communication": $("#sensors").val(),
+        "ha_inverter": $("#inverter").val(),
+        "ha_sensors": $("#sensors").val()
+    };
 }
 
 // find a marker by ID in response [objects]
@@ -211,7 +245,7 @@ function findMarkerById(id) {
     return null;
 }
 
-// upload image
+// uploads image
 function readURL(input) {
 
     const width = 250, height = 200;

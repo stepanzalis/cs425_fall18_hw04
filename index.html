@@ -58,8 +58,9 @@
 
                     <div class="row col s12">
 
-                        <img id="upload-photo" src="https://via.placeholder.com/200" height="200px" alt="placeholder">
-                        <input class="right" type='file' onchange="readURL(this);"/>
+                        <img id="upload-photo" src="https://via.placeholder.com/200" height="200px"
+                             alt="placeholder">
+                        <input id="file-chooser" class="right" type='file' onchange="readURL(this);"/>
 
                         <!-- Commission date -->
                         <div class="input-field col s6 right">
@@ -197,7 +198,8 @@
     <div class="modal-footer">
         <button id="save-panel" class="waves-effect waves-yellow black-text btn-flat">Save</button>
         <button id="update-panel" class="waves-effect waves-green black-text btn-flat" onclick="updateMarker()">Update</button>
-        <button id="delete-panel" class="waves-effect waves-red black-text btn-flat" onclick="deleteMarker()">Delete</button>
+        <button id="delete-panel" class="waves-effect waves-red black-text btn-flat" onclick="deleteMarker()">Delete
+        </button>
     </div>
 
 </div>
