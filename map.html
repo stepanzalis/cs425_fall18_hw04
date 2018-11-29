@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen"/>
+    <link rel="stylesheet" href="css/main.css">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgA1PL3Gjc7Kf7ZJQRRR7nt66DZYl4X8A"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+    <title>VP</title>
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-wrapper grey darken-4">
+        <a href="map.html" class="brand-logo .l ml-2">VP Annotation System</a>
+    </div>
+</nav>
+
+<div class="col s12" id="map"></div>
+
+<footer class="page-footer grey darken-4">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 center-align">
+                <h5 class="white-text">Just for testing purpose. All rights reserved.</h5>
+                <p class="grey-text text-lighten-4">Find the code on <a
+                        href="https://github.com/stepanzalis/cs425_fall18_hw04">Github</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright center-align">
+        <div class="container">Copyright 2018 Stepan Zalis & Loukas Solea</div>
+    </div>
+</footer>
+
+
+<!-- Modal Structure -->
+<div id="solar-modal" class="modal modal-fixed-footer">
+
+    <!-- CONTENT -->
+    <div class="modal-content">
+
+        <div class="input-field">
+            <input id="name" type="text">
+            <label for="name">Name</label>
+        </div>
+
+        <button class="modal-close btn-flat" style="position:absolute;top:0;right:0;"><img
+                style="padding: 10px 0 10px 0" src="./icons/ic_close.svg"></button>
+
+        <ul class="collapsible expandable no-shadows ">
+            <li>
+                <div class="collapsible-header"><i class="material-icons">filter_drama</i>General information</div>
+                <div class="collapsible-body">
+
+                    <div class="row col s12">
+
+                        <div class="row col s12">
+                            <img id="upload-photo" class="col s6 left" style="padding: 0 0 0 15px"
+                                 src="https://via.placeholder.com/200" alt="placeholder">
+                            <input id="file-chooser" class="col s6 right" type='file' onchange="readURL(this);"/>
+                        </div>
+
+                        <!-- Commission date -->
+                        <div class="input-field col s6 right m12">
+                            <i class="material-icons prefix">calendar_today</i>
+                            <input id="date" type="date" class="validate">
+                            <label for="date">Date of commission</label>
+                        </div>
+
+                        <!-- Operator -->
+                        <div class="input-field col s6 left m12">
+                            <i class="material-icons prefix">account_circle</i>
+                            <input id="operator" type="text" class="validate">
+                            <label for="operator">Operator</label>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="input-field col s12" style="margin-top: 30px">
+                            <i class="material-icons prefix">mode_edit</i>
+                            <textarea id="desc" class="materialize-textarea"></textarea>
+                            <label for="desc">Description</label>
+                        </div>
+                    </div>
+
+
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">place</i>Address</div>
+                <div class="collapsible-body">
+
+                    <div class="row col s12">
+                        <!-- Latitude -->
+                        <div class="input-field col s6 left m12">
+                            <i class="material-icons prefix">place</i>
+                            <input id="lat" type="text">
+                            <label for="lat">Latitude</label>
+                        </div>
+
+                        <!-- Longitude -->
+                        <div class="input-field col s6 left m12">
+                            <i class="material-icons prefix">place</i>
+                            <input id="lot" type="text">
+                            <label for="lot">Longitude</label>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="input-field col s12 left m12">
+                            <i class="material-icons prefix">place</i>
+                            <textarea id="address" class="materialize-textarea"></textarea>
+                            <label for="address">Address</label>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">trending_up</i>Efficiency</div>
+                <div class="collapsible-body">
+
+                    <div class="row col s12">
+                        <!-- System power -->
+                        <div class="input-field col s6 left m12">
+                            <i class="material-icons prefix">power</i>
+                            <input id="power" type="number" class="validate">
+                            <label for="power">System power (kWp)</label>
+                        </div>
+
+                        <!-- Annual production -->
+                        <div class="input-field col s6 right m12">
+                            <i class="material-icons prefix">trending_down</i>
+                            <input id="production" type="number" class="validate">
+                            <label for="production">Annual production (kWh)</label>
+
+                        </div>
+
+                        <!-- CO2 avoided -->
+                        <div class="input-field col s6 left m12">
+                            <i class="material-icons prefix"></i>
+                            <input id="co2" type="number" step="0.01" class="validate">
+                            <label for="co2">CO2 avoided (tons per annum)</label>
+                        </div>
+
+                        <!-- Reimbursement -->
+                        <div class="input-field col s6 right m12">
+                            <i class="material-icons prefix"></i>
+                            <input id="reimbursement" type="number" class="validate">
+                            <label for="reimbursement">Reimbursement (euros)</label>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">build</i>Hardware</div>
+                <div class="collapsible-body">
+
+                    <div class="row col s12">
+
+                        <!-- Panel modules -->
+                        <div class="input-field col s6 left m12">
+                            <input id="panels" type="text" class="validate">
+                            <label for="panels">Panel modules</label>
+                        </div>
+
+                        <!-- Inverter -->
+                        <div class="input-field col s6 right m12">
+                            <input id="sensors" type="text" class="validate">
+                            <label for="sensors">Sensors</label>
+                        </div>
+
+                        <!-- Azimuth angle -->
+                        <div class="input-field col s6 left m12">
+                            <input id="azimuth" type="number" class="validate">
+                            <label for="azimuth">Azimuth angle</label>
+                        </div>
+
+                        <!-- Inclination angle -->
+                        <div class="input-field col s6 right m12">
+                            <input id="inclination" type="number" class="validate">
+                            <label for="inclination">Inclination angle</label>
+                        </div>
+
+                        <!-- Communication -->
+                        <div class="input-field col s6 left m12">
+                            <input id="communication" type="text" class="validate">
+                            <label for="communication">Communication</label>
+                        </div>
+
+                        <!-- Inverter -->
+                        <div class="input-field col s6 right m12">
+                            <input id="inverter" type="text" class="validate">
+                            <label for="inverter">Inverter</label>
+                        </div>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+
+
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="modal-footer">
+        <button id="save-panel" class="waves-effect waves-yellow black-text btn-flat" onclick="createNewMarker()">Save
+        </button>
+        <button id="update-panel" class="waves-effect waves-green black-text btn-flat" onclick="updateMarker()">Update
+        </button>
+        <button id="delete-panel" class="waves-effect waves-red black-text btn-flat" onclick="deleteMarker()">Delete
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>

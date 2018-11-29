@@ -23,7 +23,7 @@ function login() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             sessionStorage.setItem('status','true');
-            window.location.href = '/cs425_hw4/index.html';
+            window.location.href = '/map.html';
         },
         error: function (xhr, status, error) {
             if (xhr.status === 404) {

@@ -6,16 +6,17 @@ let markers = [];
 
 $(document).ready(function () {
 
-    // checkLoggedIn();
+    // Collapsible
+    let collapsible = document.querySelector('.collapsible.expandable');
+    collapsible_instance = M.Collapsible.init(collapsible, {
+        accordion: false
+    });
 
-    initMap();
-    getMarkers();
-});
+    if (checkLoggedIn()) {
+        initMap();
+        getMarkers();
 
-// checks if user is logged in
-function checkLoggedIn() {
-
-    if (sessionStorage.getItem('status') === 'false') {
+    } else {
         swal({
             title: "Sorry",
             text: "You have to log in first",
@@ -24,6 +25,11 @@ function checkLoggedIn() {
             window.location.replace("/cs425_hw4/");
         });
     }
+});
+
+// checks if user is logged in
+function checkLoggedIn() {
+    return sessionStorage.getItem('status') !== 'false';
 }
 
 // get all markers from API
@@ -72,7 +78,6 @@ function initMap() {
         zoom: 9
     });
 
-    // TODO: put data to modal
     map.addListener('click', function (event) {
         let latLng = event.latLng;
 
@@ -268,7 +273,7 @@ function getDataFromInputs() {
 
     // check file name
     let selector = $('#file-chooser')[0].files[0];
-    let file = selector === null ? "" : selector.name;
+    let file = selector == null ? "" : selector.name;
 
     let data = {
         "id": selectedId,
@@ -364,11 +369,6 @@ function toggleModal() {
     modal_instance.isOpen ? modal_instance.close() : modal_instance.open();
 }
 
-// Collapsible
-let collapsible = document.querySelector('.collapsible.expandable');
-collapsible_instance = M.Collapsible.init(collapsible, {
-    accordion: false
-});
 
 
 
