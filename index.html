@@ -47,7 +47,11 @@
     <!-- CONTENT -->
     <div class="modal-content">
 
-        <h4 id="name" style="padding-bottom: 10px"></h4>
+        <div class="input-field">
+            <input id="name" type="text">
+            <label for="name">Name</label>
+        </div>
+
         <button class="modal-close btn-flat" style="position:absolute;top:0;right:0;"><img
                 style="padding: 10px 0 10px 0" src="./icons/ic_close.svg"></button>
 
@@ -58,9 +62,11 @@
 
                     <div class="row col s12">
 
-                        <img id="upload-photo" src="https://via.placeholder.com/200" height="200px"
-                             alt="placeholder">
-                        <input id="file-chooser" class="right" type='file' onchange="readURL(this);"/>
+                        <div class="row col s12">
+                            <img id="upload-photo" class="col s6 left" style="padding: 0 0 0 15px"
+                                 src="https://via.placeholder.com/200" height="200px" alt="placeholder">
+                            <input id="file-chooser" class="col s6 right" type='file' onchange="readURL(this);"/>
+                        </div>
 
                         <!-- Commission date -->
                         <div class="input-field col s6 right">
@@ -70,19 +76,20 @@
                         </div>
 
                         <!-- Operator -->
-                        <div class="input-field col s6 right">
+                        <div class="input-field col s6 left">
                             <i class="material-icons prefix">account_circle</i>
                             <input id="operator" type="text" class="validate">
                             <label for="operator">Operator</label>
                         </div>
 
+                        <!-- Description -->
+                        <div class="input-field col s12" style="margin-top: 30px">
+                            <i class="material-icons prefix">mode_edit</i>
+                            <textarea id="desc" class="materialize-textarea"></textarea>
+                            <label for="desc">Description</label>
+                        </div>
                     </div>
 
-                    <div class="input-field" style="margin-top: 30px">
-                        <i class="material-icons prefix">mode_edit</i>
-                        <textarea id="desc" class="materialize-textarea"></textarea>
-                        <label for="desc">Description</label>
-                    </div>
 
                 </div>
             </li>
@@ -104,12 +111,13 @@
                             <input id="lot" type="text">
                             <label for="lot">Longitude</label>
                         </div>
-                    </div>
 
-                    <div class="input-field col s12 center">
-                        <i class="material-icons prefix">place</i>
-                        <input id="address" type="text">
-                        <label for="address">Address</label>
+                        <!-- Address -->
+                        <div class="input-field col s12 left">
+                            <i class="material-icons prefix">place</i>
+                            <textarea id="address" class="materialize-textarea"></textarea>
+                            <label for="address">Address</label>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -203,7 +211,8 @@
     <!-- BUTTONS -->
     <div class="modal-footer">
         <button id="save-panel" class="waves-effect waves-yellow black-text btn-flat">Save</button>
-        <button id="update-panel" class="waves-effect waves-green black-text btn-flat" onclick="updateMarker()">Update</button>
+        <button id="update-panel" class="waves-effect waves-green black-text btn-flat" onclick="updateMarker()">Update
+        </button>
         <button id="delete-panel" class="waves-effect waves-red black-text btn-flat" onclick="deleteMarker()">Delete
         </button>
     </div>

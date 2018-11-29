@@ -107,7 +107,7 @@ function addMarker(location, id) {
 // fills the modal window with information about the PVß
 function fillModal(marker) {
 
-    $("#name").text(marker.name);
+    $("#name").val(marker.name);
     $("#date").val(marker.date);
     $("#operator").val(marker.operator);
     $("#desc").val(marker.description);
@@ -161,7 +161,7 @@ function deleteMarker() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             toggleModal();
-            deactivateMarker(0); // all markers must be refreshed
+            deactivateMarkers(selectedId);
             getMarkers();
         },
         error: function (xhr, status, error) {
@@ -171,16 +171,24 @@ function deleteMarker() {
 }
 
 // deletes marker just from map
-function deactivateMarker(id) {
+function deactivateMarkers(id) {
 
     for (let i = 0; i < markers.length; i++) {
         let m = markers[i];
 
-        // means all markers must be deactivated
-        if (id === 0) m.setMap(null);
-        else if (id === m.id){
+        if (id === m.id){
             m.setMap(null);
         }
+    }
+}
+
+// deactivates all markers from map
+function deleteMarkersFromMap() {
+
+    for (let i = 0; i < markers.length; i++) {
+
+        let m = markers[i];
+        m.setMap(null);
     }
 }
 
@@ -197,6 +205,7 @@ function updateMarker() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             toggleModal();
+            deleteMarkersFromMap();
             getMarkers();
         },
         error: function (xhr, status, error) {
