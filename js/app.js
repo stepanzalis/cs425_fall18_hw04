@@ -98,10 +98,10 @@ function uploadPhoto() {
         processData: false,
         contentType: false,
         success: function (response, status, xhr) {
-            alert("done")
+            // done
         },
         error: function (xhr, status, error) {
-            alert("error")
+            // error
         }
     });
 }
@@ -266,6 +266,10 @@ function updateMarker() {
 // returns data from an modal pop up
 function getDataFromInputs() {
 
+    // check file name
+    let selector = $('#file-chooser')[0].files[0];
+    let file = selector === null ? "" : selector.name;
+
     let data = {
         "id": selectedId,
         "name": $("#name").val(),
@@ -274,7 +278,7 @@ function getDataFromInputs() {
         "operator": $("#operator").val(),
         "date": $("#date").val(),
         "description": $("#desc").val(),
-        "photo_path": "./images/" . $('#file-chooser')[0].files[0].name, // photo path
+        "photo_path": "./images/" + "" + file, // photo path
         "address": $("#address").val(),
         "ef_system_power": $("#power").val(),
         "ef_annual_production": $("#production").val(),
