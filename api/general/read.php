@@ -67,7 +67,7 @@ if($num>0){
         array_push($solar_arr, $solar_item);
     }
 
-    // set response code - 200 OK
+    header("HTTP/1.1 200 OK");
     http_response_code(200);
 
     // show products data in json format

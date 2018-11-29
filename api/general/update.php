@@ -42,6 +42,7 @@ $category->ha_sensors = $data->ha_sensors;
 
 // Update post
 if ($category->update()) {
+    header("HTTP/1.1 200 OK");
     echo json_encode(
         array('message' => 'General Updated')
     );

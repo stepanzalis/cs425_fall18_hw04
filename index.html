@@ -144,7 +144,7 @@
                         <!-- CO2 avoided -->
                         <div class="input-field col s6 left">
                             <i class="material-icons prefix"></i>
-                            <input id="co2" type="number" class="validate">
+                            <input id="co2" type="number" step="0.01" class="validate">
                             <label for="co2">CO2 avoided (tons per annum)</label>
                         </div>
 
@@ -210,7 +210,8 @@
 
     <!-- BUTTONS -->
     <div class="modal-footer">
-        <button id="save-panel" class="waves-effect waves-yellow black-text btn-flat">Save</button>
+        <button id="save-panel" class="waves-effect waves-yellow black-text btn-flat" onclick="createNewMarker()">Save
+        </button>
         <button id="update-panel" class="waves-effect waves-green black-text btn-flat" onclick="updateMarker()">Update
         </button>
         <button id="delete-panel" class="waves-effect waves-red black-text btn-flat" onclick="deleteMarker()">Delete

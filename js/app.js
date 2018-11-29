@@ -1,6 +1,7 @@
 let map;
 let objects;
 let selectedId;
+let collapsible_instance;
 let markers = [];
 
 $(document).ready(function () {
@@ -75,7 +76,10 @@ function initMap() {
     map.addListener('click', function (event) {
         let latLng = event.latLng;
 
-        alert(latLng);
+        newModalWithLatLng(latLng.lat(), latLng.lng());
+        hideModalAction(1);
+        collapsible_instance.open(0);
+
         toggleModal();
     });
 }
@@ -94,7 +98,7 @@ function addMarker(location, id) {
 
         selectedId = id;
 
-        let mar = findMarkerById(id);
+        let mar = getMarkerDataById(id);
         if (mar != null) {
             toggleModal();
             fillModal(mar);
@@ -131,6 +135,29 @@ function fillModal(marker) {
     hideModalAction(0) // hide save button
 }
 
+function newModalWithLatLng(lat, lng) {
+
+    $("#name").val("");
+    $("#date").val("");
+    $("#operator").val("");
+    $("#desc").val("");
+    $("#lat").val(lat.toFixed(2));
+    $("#lot").val(lng.toFixed(2));
+    $("#address").val("");
+    $("#power").val("");
+    $("#production").val("");
+    $("#co2").val("");
+    $("#reimbursement").val("");
+    $("#panels").val("");
+    $("#sensors").val("");
+    $("#azimuth").val("");
+    $("#inclination").val("");
+    $("#inverter").val("");
+    $("#communication").val("");
+
+    window.M.updateTextFields();
+}
+
 /*
     Hide action button depending:
     0 -> hide "Save" (when detail)
@@ -161,7 +188,7 @@ function deleteMarker() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             toggleModal();
-            deactivateMarkers(selectedId);
+            deactivateMarkerById(selectedId);
             getMarkers();
         },
         error: function (xhr, status, error) {
@@ -171,19 +198,16 @@ function deleteMarker() {
 }
 
 // deletes marker just from map
-function deactivateMarkers(id) {
+function deactivateMarkerById(id) {
 
     for (let i = 0; i < markers.length; i++) {
         let m = markers[i];
-
-        if (id === m.id){
-            m.setMap(null);
-        }
+        if (id === m.id)m.setMap(null);
     }
 }
 
 // deactivates all markers from map
-function deleteMarkersFromMap() {
+function deactivateAllMarkers() {
 
     for (let i = 0; i < markers.length; i++) {
 
@@ -196,7 +220,7 @@ function deleteMarkersFromMap() {
 function updateMarker() {
 
     // code to json
-    let json = JSON.stringify(getDataFromInput());
+    let json = getDataFromInputs();
 
     $.ajax({
         type: 'PUT',
@@ -205,7 +229,7 @@ function updateMarker() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             toggleModal();
-            deleteMarkersFromMap();
+            deactivateAllMarkers();
             getMarkers();
         },
         error: function (xhr, status, error) {
@@ -216,9 +240,9 @@ function updateMarker() {
 }
 
 // returns data from an modal pop up
-function getDataFromInput() {
+function getDataFromInputs() {
 
-    return {
+    let data = {
         "id": selectedId,
         "name": $("#name").val(),
         "latitude": $("#lat").val(),
@@ -239,10 +263,12 @@ function getDataFromInput() {
         "ha_inverter": $("#inverter").val(),
         "ha_sensors": $("#sensors").val()
     };
+
+    return JSON.stringify(data);
 }
 
 // find a marker by ID in response [objects]
-function findMarkerById(id) {
+function getMarkerDataById(id) {
 
     for (let i = 0; i < objects.length; i++) {
         let obj = objects[i];
@@ -273,6 +299,30 @@ function readURL(input) {
     }
 }
 
+function createNewMarker() {
+
+    let json = getDataFromInputs();
+
+    $.ajax({
+        type: 'POST',
+        url: "./api/general/create.php",
+        data: json,
+        dataType: 'JSON',
+        success: function (response, status, xhr) {
+            toggleModal();
+            deactivateAllMarkers();
+            getMarkers();
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 401) {
+                swal("Sorry", "Can not create marker.", "error");
+            }
+        }
+    });
+
+
+}
+
 // Modal
 let modal_instance;
 document.addEventListener('DOMContentLoaded', function () {
@@ -287,7 +337,7 @@ function toggleModal() {
 
 // Collapsible
 let collapsible = document.querySelector('.collapsible.expandable');
-let collapsible_instance = M.Collapsible.init(collapsible, {
+collapsible_instance = M.Collapsible.init(collapsible, {
     accordion: false
 });
 

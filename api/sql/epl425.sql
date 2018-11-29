@@ -36,7 +36,7 @@ CREATE TABLE `general` (
   `longitude` double NOT NULL,
   `operator` varchar(20) NOT NULL,
   `date` date NOT NULL,
-  `description` varchar(50) NOT NULL,
+  `description` varchar(50),
   `photo_path` varchar(50) NOT NULL,
   `ef_system_power` double NOT NULL,
   `ef_annual_production` double NOT NULL,

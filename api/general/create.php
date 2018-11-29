@@ -35,12 +35,15 @@ $category->ha_inclination_angle = $data->ha_inclination_angle;
 $category->ha_communication = $data->ha_communication;
 $category->ha_inverter = $data->ha_inverter;
 $category->ha_sensors = $data->ha_sensors;
+
 // Create Category
 if($category->create()) {
+    header("HTTP/1.1 200 OK");
     echo json_encode(
         array('message' => 'General Created')
     );
 } else {
+    header("HTTP/1.1 401");
     echo json_encode(
         array('message' => 'General Not Created')
     );
