@@ -84,6 +84,28 @@ function initMap() {
     });
 }
 
+function uploadPhoto() {
+
+    let formData = new FormData();
+
+    let file = $('#file-chooser')[0].files[0];
+    formData.append('image', file);
+
+    $.ajax({
+        type: 'POST',
+        url: "./api/general/upload.php",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response, status, xhr) {
+            alert("done")
+        },
+        error: function (xhr, status, error) {
+            alert("error")
+        }
+    });
+}
+
 // Adds a marker to the map and push to the array.
 function addMarker(location, id) {
 
@@ -155,6 +177,8 @@ function newModalWithLatLng(lat, lng) {
     $("#inverter").val("");
     $("#communication").val("");
 
+    $("#upload-photo").attr("src", "https://via.placeholder.com/200");
+
     window.M.updateTextFields();
 }
 
@@ -202,7 +226,7 @@ function deactivateMarkerById(id) {
 
     for (let i = 0; i < markers.length; i++) {
         let m = markers[i];
-        if (id === m.id)m.setMap(null);
+        if (id === m.id) m.setMap(null);
     }
 }
 
@@ -250,7 +274,7 @@ function getDataFromInputs() {
         "operator": $("#operator").val(),
         "date": $("#date").val(),
         "description": $("#desc").val(),
-        "photo_path": "",
+        "photo_path": "./images/" . $('#file-chooser')[0].files[0].name, // photo path
         "address": $("#address").val(),
         "ef_system_power": $("#power").val(),
         "ef_annual_production": $("#production").val(),
@@ -309,6 +333,7 @@ function createNewMarker() {
         data: json,
         dataType: 'JSON',
         success: function (response, status, xhr) {
+            uploadPhoto();
             toggleModal();
             deactivateAllMarkers();
             getMarkers();
