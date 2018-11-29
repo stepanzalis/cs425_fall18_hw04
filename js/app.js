@@ -113,6 +113,7 @@ function fillModal(marker) {
     $("#desc").val(marker.description);
     $("#lat").val(marker.latitude);
     $("#lot").val(marker.longitude);
+    $("#address").val(marker.address);
     $("#power").val(marker.ef_system_power);
     $("#production").val(marker.ef_annual_production);
     $("#co2").val(marker.ef_co2_avoided);
@@ -217,7 +218,7 @@ function getDataFromInput() {
         "date": $("#date").val(),
         "description": $("#desc").val(),
         "photo_path": "",
-        "address": "",
+        "address": $("#address").val(),
         "ef_system_power": $("#power").val(),
         "ef_annual_production": $("#production").val(),
         "ef_co2_avoided": $("#co2").val(),
