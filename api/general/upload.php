@@ -17,17 +17,14 @@ if (isset($_FILES["image"])) {
         $upload_dir = $_SERVER['DOCUMENT_ROOT']. "/cs425_hw4/images/" .$image_name;
 
         if (move_uploaded_file($tmp_file, $upload_dir)) {
-            header("HTTP/1.1 200 OK");
             $response["message"] = "upload successful";
         } else {
-            header("HTTP/1.1 404");
             $response["message"] = "upload failed";
         }
     }
 }
 
 else {
-    header("HTTP/1.1 400");
     $response["message"] = "invalid request";
 }
 

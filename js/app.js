@@ -125,10 +125,10 @@ function addMarker(location, id) {
 
         selectedId = id;
 
-        let mar = getMarkerDataById(id);
-        if (mar != null) {
+        let data = getMarkerDataById(id);
+        if (data != null) {
             toggleModal();
-            fillModal(mar);
+            fillModal(data);
         }
     });
 
@@ -252,14 +252,15 @@ function deleteMarker() {
         data: json,
         dataType: 'JSON',
         success: function (response, status, xhr) {
-            toggleModal();
             deactivateMarkerById(selectedId);
-            getMarkers();
+            toggleModal();
+            // getMarkers();
         },
         error: function (xhr, status, error) {
             swal("Sorry", "Something went wrong!", "error");
         }
     });
+
 }
 
 // deletes marker just from map
@@ -267,7 +268,10 @@ function deactivateMarkerById(id) {
 
     for (let i = 0; i < markers.length; i++) {
         let m = markers[i];
-        if (id === m.id) m.setMap(null);
+        if (id === m.id) {
+            m.setMap(null);
+            markers.splice(i, 1);
+        }
     }
 }
 
@@ -279,6 +283,8 @@ function deactivateAllMarkers() {
         let m = markers[i];
         m.setMap(null);
     }
+
+    markers = [];
 }
 
 // updates marker
@@ -293,9 +299,9 @@ function updateMarker() {
         data: json,
         dataType: 'JSON',
         success: function (response, status, xhr) {
-            toggleModal();
             deactivateAllMarkers();
             getMarkers();
+            toggleModal();
         },
         error: function (xhr, status, error) {
             swal("Sorry", "Something went wrong!", "error");
@@ -382,10 +388,10 @@ function createNewMarker() {
         data: json,
         dataType: 'JSON',
         success: function (response, status, xhr) {
-            uploadPhoto();
             toggleModal();
             deactivateAllMarkers();
             getMarkers();
+            uploadPhoto();
         },
         error: function (xhr, status, error) {
             if (xhr.status === 401) {
