@@ -117,9 +117,18 @@ function uploadPhoto() {
 // Adds a marker to the map and push to the array.
 function addMarker(location, id) {
 
+    let markerIcon = {
+        url: './icons/ic_marker.png',
+        scaledSize: new google.maps.Size(40, 40),
+        origin: new google.maps.Point(0, 0), // used if icon is a part of sprite, indicates image position in sprite
+        anchor: new google.maps.Point(20,40) // lets offset the marker image
+    };
+
     let marker = new google.maps.Marker({
         position: location,
         map: map,
+        icon: markerIcon,
+        animation: google.maps.Animation.DROP,
         id: id // custom attribute
     });
 
