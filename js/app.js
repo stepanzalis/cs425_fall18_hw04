@@ -39,6 +39,9 @@ function getMarkers() {
         type: 'GET',
         url: "./api/general/read.php",
         dataType: 'JSON',
+        headers: {
+            'Cache-Control': 'max-age=0'
+        },
         success: function (response, status, xhr) {
             objects = response; // hold data in memory
             parsePositions(response);
