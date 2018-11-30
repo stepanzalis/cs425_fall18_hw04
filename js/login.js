@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    sessionStorage.setItem('status','false');
+    sessionStorage.setItem('status', 'false');
 });
 
 // login
@@ -14,6 +14,12 @@ function login() {
         return;
     }
 
+    if (!validEmail(email)) {
+        swal("Invalid email!", "Please, write valid email address", "warning");
+        return;
+    }
+
+
     let json = JSON.stringify({email: email, password: password});
 
     $.ajax({
@@ -22,7 +28,7 @@ function login() {
         data: json,
         dataType: 'JSON',
         success: function (response, status, xhr) {
-            sessionStorage.setItem('status','true');
+            sessionStorage.setItem('status', 'true');
             window.location.href = '/map.html';
         },
         error: function (xhr, status, error) {
@@ -50,3 +56,11 @@ function checkInputs(email, password) {
 
     else return "";
 }
+
+// check email
+
+function validEmail(email) {
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+

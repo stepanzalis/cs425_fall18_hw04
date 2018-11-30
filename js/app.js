@@ -168,8 +168,8 @@ function newModalWithLatLng(lat, lng) {
     $("#date").val("");
     $("#operator").val("");
     $("#desc").val("");
-    $("#lat").val(lat.toFixed(2));
-    $("#lot").val(lng.toFixed(2));
+    $("#lat").val(lat);
+    $("#lot").val(lng);
     $("#address").val("");
     $("#power").val("");
     $("#production").val("");
