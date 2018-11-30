@@ -19,7 +19,6 @@ function login() {
         return;
     }
 
-
     let json = JSON.stringify({email: email, password: password});
 
     $.ajax({

@@ -187,6 +187,39 @@ function newModalWithLatLng(lat, lng) {
     window.M.updateTextFields();
 }
 
+// Dynamic validator
+// To add new required validated fields, just add name an selector
+function validateFromInputs() {
+
+    let inputs = new Map();
+    let errors = [];
+
+    // general + address
+    inputs.set("Name", $("#name").val());
+    inputs.set("Operator name", $("#operator").val());
+    inputs.set("Address", $("#address").val());
+    inputs.set("Latitude", $("#lat").val());
+    inputs.set("Longitude", $("#lot").val());
+
+    // efficiency
+    inputs.set("System power", $("#power").val());
+    inputs.set("Annual production", $("#production").val());
+    inputs.set("CO2 avoided", $("#co2").val());
+    inputs.set("Reimbursement", $("#reimbursement").val());
+
+    for (const [key, value] of inputs.entries()) {
+        if (value.length === 0) {
+            errors.push(" " + key);
+        }
+    }
+
+    if (errors.length === 0) return true;
+    else {
+        swal("Fill the inputs", errors.toString(), "warning");
+        return false;
+    }
+}
+
 /*
     Hide action button depending:
     0 -> hide "Save" (when detail)
@@ -197,8 +230,11 @@ function hideModalAction(action) {
     switch (action) {
         case 0:
             $("#save-panel").hide();
+            $("#update-panel").show();
+            $("#delete-panel").show();
             break;
         case 1:
+            $("#save-panel").show();
             $("#update-panel").hide();
             $("#delete-panel").hide();
             break;
@@ -333,6 +369,10 @@ function readURL(input) {
 }
 
 function createNewMarker() {
+
+    if (!validateFromInputs()) {
+        return;
+    }
 
     let json = getDataFromInputs();
 
