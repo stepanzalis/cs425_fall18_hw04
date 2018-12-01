@@ -1,6 +1,3 @@
-$(document).ready(function () {
-    sessionStorage.setItem('status', 'false');
-});
 
 // login
 function login() {

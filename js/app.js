@@ -15,7 +15,6 @@ $(document).ready(function () {
     if (checkLoggedIn()) {
         initMap();
         getMarkers();
-
     } else {
         swal({
             title: "Sorry",
@@ -29,7 +28,7 @@ $(document).ready(function () {
 
 // checks if user is logged in
 function checkLoggedIn() {
-    return sessionStorage.getItem('status') !== 'false';
+    return sessionStorage.getItem('status') === 'true';
 }
 
 // get all markers from API
@@ -39,9 +38,6 @@ function getMarkers() {
         type: 'GET',
         url: "./api/general/read.php",
         dataType: 'JSON',
-        headers: {
-            'Cache-Control': 'max-age=0'
-        },
         success: function (response, status, xhr) {
             objects = response; // hold data in memory
             parsePositions(response);
