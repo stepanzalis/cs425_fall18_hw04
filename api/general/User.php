@@ -17,6 +17,7 @@ class User
     public $last_name;
     public $email;
     public $password;
+    public $token;
 
     // Constructor with DB
     public function __construct($db)
@@ -25,18 +26,18 @@ class User
     }
 
 
-    function tokenExists($password)
+    function tokenExists($token)
     {
         // query to check if email exists
         $query = "SELECT id
             FROM " . $this->table . "
-            WHERE password = ?";
+            WHERE token = ?";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
         // bind given email value
-        $stmt->bindParam(1, $password);
+        $stmt->bindParam(1, $token);
 
         // execute the query
         $stmt->execute();
@@ -56,7 +57,7 @@ class User
     function emailExists()
     {
         // query to check if email exists
-        $query = "SELECT id, first_name, last_name, password
+        $query = "SELECT id, first_name, last_name, token, password
             FROM " . $this->table . "
             WHERE email = ?
             LIMIT 0,1";
@@ -87,6 +88,7 @@ class User
             $this->first_name = $row['first_name'];
             $this->last_name = $row['last_name'];
             $this->password = $row['password'];
+            $this->token = $row['token'];
 
             // return true because email exists in the database
             return true;

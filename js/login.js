@@ -24,7 +24,6 @@ function login() {
         data: json,
         dataType: 'JSON',
         success: function (response, status, xhr) {
-            sessionStorage.setItem('status', 'true');
             sessionStorage.setItem('token', response["token"]);
             window.location.href = '/cs425_hw4/map.html';
         },
