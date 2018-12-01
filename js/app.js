@@ -22,7 +22,7 @@ $(document).ready(function () {
             text: "You have to log in first",
             type: "error"
         }).then(function () {
-            window.location.replace("/cs425_hw4/");
+            window.location.replace("/index.html");
         });
     }
 });
@@ -121,7 +121,7 @@ function addMarker(location, id) {
         url: './icons/ic_marker.png',
         scaledSize: new google.maps.Size(40, 40),
         origin: new google.maps.Point(0, 0), // used if icon is a part of sprite, indicates image position in sprite
-        anchor: new google.maps.Point(20,40) // lets offset the marker image
+        anchor: new google.maps.Point(20, 40) // lets offset the marker image
     };
 
     let marker = new google.maps.Marker({

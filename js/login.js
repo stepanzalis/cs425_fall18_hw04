@@ -28,7 +28,7 @@ function login() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             sessionStorage.setItem('status', 'true');
-            window.location.href = '/map.html';
+            window.location.href = '/cs425_hw4/map.html';
         },
         error: function (xhr, status, error) {
             if (xhr.status === 404) {
@@ -56,8 +56,12 @@ function checkInputs(email, password) {
     else return "";
 }
 
-// check email
+function logout() {
+    sessionStorage.setItem('status', 'false');
+    window.location.replace('/cs425_hw4/index.html');
+}
 
+// check email
 function validEmail(email) {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
