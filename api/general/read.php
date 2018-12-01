@@ -17,65 +17,76 @@ header("Pragma: no-cache");
 // include database and object files
 include_once '../config/Database.php';
 include_once 'Solar.php';
+include_once('User.php');
 
 // instantiate database and product object
 $database = new Database();
 $db = $database->connect();
 
-// initialize object
-$solar = new Solar($db);
+$headers = apache_request_headers();
 
-// read products will be here
-// query products
-$stmt = $solar->read();
-$num = $stmt->rowCount();
+if (isset($headers['Authorization'])) {
 
-// check if more than 0 record found
-if($num>0){
+    $user = new User($db);
 
-    // products array
-    $solar_arr=array();
+    if ($user->tokenExists($headers['Authorization'])) {
+        // initialize object
+        $solar = new Solar($db);
 
-    // retrieve our table contents
-    // fetch() is faster than fetchAll()
-    // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        // extract row
-        // this will make $row['name'] to
-        // just $name only
-        extract($row);
+        // read products will be here
+        // query products
+        $stmt = $solar->read();
+        $num = $stmt->rowCount();
 
-        $solar_item=array(
-            "id" => $id,
-            "name" => $name,
-            "address" => $address,
-            "latitude" => $latitude,
-            "longitude" => $longitude,
-            "operator" => $operator,
-            "date" => $date,
-            "description" => $description,
-            "photo_path" => $photo_path,
-            "ef_system_power"=>$ef_system_power,
-            "ef_annual_production"=>$ef_annual_production,
-            "ef_co2_avoided"=>$ef_co2_avoided,
-            "ef_reimbursement"=>$ef_reimbursement,
-            "ha_solar_panel"=>$ha_solar_panel,
-            "ha_azimuth_angle"=>$ha_azimuth_angle,
-            "ha_inclination_angle"=>$ha_inclination_angle,
-            "ha_communication"=>$ha_communication,
-            "ha_inverter"=>$ha_inverter,
-            "ha_sensors"=>$ha_sensors
-        );
+        // check if more than 0 record found
+        if ($num > 0) {
 
-        array_push($solar_arr, $solar_item);
+            // products array
+            $solar_arr = array();
+
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($row);
+
+                $solar_item = array(
+                    "id" => $id,
+                    "name" => $name,
+                    "address" => $address,
+                    "latitude" => $latitude,
+                    "longitude" => $longitude,
+                    "operator" => $operator,
+                    "date" => $date,
+                    "description" => $description,
+                    "photo_path" => $photo_path,
+                    "ef_system_power" => $ef_system_power,
+                    "ef_annual_production" => $ef_annual_production,
+                    "ef_co2_avoided" => $ef_co2_avoided,
+                    "ef_reimbursement" => $ef_reimbursement,
+                    "ha_solar_panel" => $ha_solar_panel,
+                    "ha_azimuth_angle" => $ha_azimuth_angle,
+                    "ha_inclination_angle" => $ha_inclination_angle,
+                    "ha_communication" => $ha_communication,
+                    "ha_inverter" => $ha_inverter,
+                    "ha_sensors" => $ha_sensors
+                );
+
+                array_push($solar_arr, $solar_item);
+            }
+
+            header("HTTP/1.1 200 OK");
+            http_response_code(200);
+            echo json_encode($solar_arr);
+
+        }
     }
-
-    header("HTTP/1.1 200 OK");
-    http_response_code(200);
-
-    // show products data in json format
-    echo json_encode($solar_arr);
+    else {
+        header("HTTP/1.1 401 Forbidden");
+        $res = array("response" => "Login first");
+        echo json_encode($res);
+    }
 }
-
-// no products found will be here
-?>

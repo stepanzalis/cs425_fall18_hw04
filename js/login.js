@@ -25,6 +25,7 @@ function login() {
         dataType: 'JSON',
         success: function (response, status, xhr) {
             sessionStorage.setItem('status', 'true');
+            sessionStorage.setItem('token', response["token"]);
             window.location.href = '/cs425_hw4/map.html';
         },
         error: function (xhr, status, error) {
@@ -51,11 +52,6 @@ function checkInputs(email, password) {
     if (plength === 0) return "password";
 
     else return "";
-}
-
-function logout() {
-    sessionStorage.setItem('status', 'false');
-    window.location.replace('/cs425_hw4/index.html');
 }
 
 // check email

@@ -32,7 +32,7 @@ if (!$email_exists) {
 if (password_verify($sent_password, $user->password)) {
     header("HTTP/1.1 200 OK");
     echo json_encode(
-        array('response' => 'Correct')
+        array('token' => $user->password)
     );
 } else {
     header("HTTP/1.1 401");

@@ -12,23 +12,14 @@ $(document).ready(function () {
         accordion: false
     });
 
-    if (checkLoggedIn()) {
-        initMap();
-        getMarkers();
-    } else {
-        swal({
-            title: "Sorry",
-            text: "You have to log in first",
-            type: "error"
-        }).then(function () {
-            window.location.replace("/index.html");
-        });
-    }
+    initMap();
+    getMarkers();
 });
 
-// checks if user is logged in
-function checkLoggedIn() {
-    return sessionStorage.getItem('status') === 'true';
+// logout
+function logout() {
+    sessionStorage.setItem('token', '');
+    window.location.href = '/cs425_hw4/index.html';
 }
 
 // get all markers from API
@@ -37,13 +28,16 @@ function getMarkers() {
     $.ajax({
         type: 'GET',
         url: "./api/general/read.php",
+        headers: {
+            "Authorization": sessionStorage.getItem("token"),
+        },
         dataType: 'JSON',
         success: function (response, status, xhr) {
             objects = response; // hold data in memory
             parsePositions(response);
         },
         error: function (xhr, status, error) {
-            swal("Sorry :(", "Something went wrong, could not show markers on map. Please, try it later.", "error");
+            checkStatusCode(xhr.status);
         }
     });
 }
@@ -105,7 +99,11 @@ function uploadPhoto() {
             // done
         },
         error: function (xhr, status, error) {
-            // error
+            if (xhr.status === 401) {
+                swal("Login", "Please, login first!", "error");
+            } else {
+                swal("Sorry :(", "Something went wrong, could not show markers on map. Please, try it later.", "error");
+            }
         }
     });
 }
@@ -124,7 +122,6 @@ function addMarker(location, id) {
         position: location,
         map: map,
         icon: markerIcon,
-        animation: google.maps.Animation.DROP,
         id: id // custom attribute
     });
 
@@ -259,13 +256,16 @@ function deleteMarker() {
         url: "./api/general/delete.php",
         data: json,
         dataType: 'JSON',
+        headers: {
+            "Authorization": sessionStorage.getItem("token"),
+        },
         success: function (response, status, xhr) {
             deactivateMarkerById(selectedId);
             toggleModal();
             // getMarkers();
         },
         error: function (xhr, status, error) {
-            swal("Sorry", "Something went wrong!", "error");
+            checkStatusCode(xhr.status);
         }
     });
 
@@ -306,13 +306,16 @@ function updateMarker() {
         url: "./api/general/update.php",
         data: json,
         dataType: 'JSON',
+        headers: {
+            "Authorization": sessionStorage.getItem("token"),
+        },
         success: function (response, status, xhr) {
             deactivateAllMarkers();
             getMarkers();
             toggleModal();
         },
         error: function (xhr, status, error) {
-            swal("Sorry", "Something went wrong!", "error");
+            checkStatusCode(xhr.status);
         }
     });
 
@@ -395,6 +398,9 @@ function createNewMarker() {
         url: "./api/general/create.php",
         data: json,
         dataType: 'JSON',
+        headers: {
+            "Authorization": sessionStorage.getItem("token"),
+        },
         success: function (response, status, xhr) {
             toggleModal();
             deactivateAllMarkers();
@@ -402,14 +408,26 @@ function createNewMarker() {
             uploadPhoto();
         },
         error: function (xhr, status, error) {
-            if (xhr.status === 401) {
-                swal("Sorry", "Can not create marker.", "error");
-            }
+            checkStatusCode(xhr.status);
         }
     });
+}
 
+function checkStatusCode(code) {
+    if (code === 401) {
+        swal({
+            title: "Sorry",
+            text: "You have to log in first",
+            type: "error"
+        }).then(function () {
+            window.location.replace("/index.html");
+        });
+    } else {
+        swal("Sorry :(", "Something went wrong, could not show markers on map. Please, try it later.", "error");
+    }
 
 }
+
 
 // Modal
 let modal_instance;

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: stepanzalis
+ * Date: 01/12/2018
+ * Time: 17:05
+ */
+
 
 class User
 {
@@ -38,7 +45,7 @@ class User
         $num = $stmt->rowCount();
 
         // if email exists, assign values to object properties for easy access and use for php sessions
-        if ($num >= 0) {
+        if ($num > 0) {
             return true;
         }
 
